@@ -94,8 +94,10 @@ FILE * LRUcache::get(char * _path)
         {
             auto temp = iter->second->file;
             remove(iter->second);
-            add(_path,temp);
             rwlock.read_unlock();
+            rwlock.write_lock();
+            add(_path,temp);
+            rwlock.write_unlock();
             printf("rigth on, bingo!\n");
             return temp;
         }
